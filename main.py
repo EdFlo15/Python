@@ -51,7 +51,10 @@ class Person(BaseModel):
                 "last_name": "Flores",
                 "age": 34,
                 "hair_color": HairColor.brown,
-                "is_married": False
+                "is_married": False,
+                "ip": "127.0.0.1",
+                "email":"eduflo1530@gmail.com"
+
             }
             }
 
@@ -102,14 +105,15 @@ def show_person(
         min_length=1,
         max_length=50,
         title="Person Name",
-        description="This is the person name. It´s between 1 and 50 characters"
-
+        description="This is the person name. It´s between 1 and 50 characters",
+        example="Eduardo"
         ),
     age:Optional[int]=Query(
         None,gt=0,
         lt=50,
         title="Person Age",
-        description="This is the person age"
+        description="This is the person age",
+        example=34
         )
 
  ):
@@ -122,7 +126,8 @@ def show_person(
         ...,
         gt=0,
         title="this is the person id parameters. Path parameter",
-        description="This is the description of the person"
+        description="This is the description of the person",
+        example=1
         ),
 ):
     return {person_id:"It´s exist"}
@@ -135,7 +140,8 @@ def update_person(
        ...,
         gt=0,   
         title="this is the person id parameters. Path parameter",
-        description="this is the description of the person"
+        description="this is the description of the person",
+        example=4
 
 ),
     person:Person=Body(...),
