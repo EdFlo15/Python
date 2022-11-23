@@ -14,6 +14,11 @@ class Person(BaseModel):
     hair_color:Optional[str] = None
     is_married:Optional[bool] = None
 
+class Location(BaseModel):
+    city:str
+    state:Optional[str] = None
+    country:Optional[str]=None
+
 app=FastAPI()
 
 @app.get("/")
@@ -58,4 +63,23 @@ def show_person(
 ):
     return {person_id:"It´s exist"}
     
+# validaciones body parameters
+
+@app.put("/person/{person_id}")
+def update_person(
+    person_id:int =Path(
+       ...,
+        gt=0,   
+        title="this is the person id parameters. Path parameter",
+        description="this is the description of the person"
+
+),
+    person:Person=Body(...),
+    location:Location=Body(...)
+):
+    results=person.dict()
+    results.update(location.dict())
+    return results
+
+        
     
