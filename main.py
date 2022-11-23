@@ -29,7 +29,7 @@ def create_person(person:Person=Body(...)):
 @app.get("/person/detail")
 def show_person(
     name:Optional[str]=Query(None,min_length=1,max_length=50),
-    age:Optional[int]=Query(None,min_value=1,max_value=100)
+    age:Optional[int]=Query(None,gt=0,lt=50)
  ):
     return {name:age}
     
