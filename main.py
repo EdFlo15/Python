@@ -4,6 +4,11 @@ from enum import Enum
 # Pydantic
 from pydantic import BaseModel
 from pydantic import Field
+from pydantic import IPvAnyAddress
+from pydantic import EmailStr
+
+
+
 # FastAPI
 from fastapi import FastAPI
 from fastapi import Body, Query,Path
@@ -36,11 +41,47 @@ class Person(BaseModel):
     )
     hair_color:Optional[HairColor] = Field(default=None)
     is_married:Optional[bool] = Field(default=None)
+    ip:Optional[IPvAnyAddress]= Field(default=None)
+    email:Optional[EmailStr]=Field(default=None)
+
+    class Config:
+        schema_extra = {
+            "example": {
+                "firt_name": "Eduardo",
+                "last_name": "Flores",
+                "age": 34,
+                "hair_color": HairColor.brown,
+                "is_married": False
+            }
+            }
 
 class Location(BaseModel):
-    city:str
-    state:Optional[str] = None
-    country:Optional[str]=None
+    city:str=Field(
+        ...,
+        min_length=1,
+        max_length=50
+    )
+    state:Optional[str] = Field(
+        ...,
+        min_length=1,
+        max_length=50
+
+    )
+    country:Optional[str]=Field(
+        ...,
+        min_length=1,
+        max_length=50
+    )
+
+    class Config:
+        schema_extra = {
+            "example": {
+                "city": "Cali",
+                "state": "Valle",
+                "country": "Colombia"
+            }
+            }
+
 
 app=FastAPI()
 
