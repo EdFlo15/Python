@@ -21,8 +21,8 @@ class HairColor(Enum):
     black="black"
     red="red"
     yellow="yellow"
-
-class Person(BaseModel):
+    
+class PersonBase(BaseModel):
     firt_name:str=Field(
         ...,
         min_length=1,
@@ -44,6 +44,8 @@ class Person(BaseModel):
     ip:Optional[IPvAnyAddress]= Field(default=None)
     email:Optional[EmailStr]=Field(default=None)
 
+class Person(PersonBase):
+    password:str=Field(..., min_length=8)
     class Config:
         schema_extra = {
             "example": {
@@ -53,10 +55,15 @@ class Person(BaseModel):
                 "hair_color": HairColor.brown,
                 "is_married": False,
                 "ip": "127.0.0.1",
-                "email":"eduflo1530@gmail.com"
+                "email":"eduflo1530@gmail.com",
+                "password":"12345678"
 
             }
             }
+
+class PersonOut(PersonBase):
+    pass
+
 
 class Location(BaseModel):
     city:str=Field(
@@ -92,7 +99,7 @@ app=FastAPI()
 def home():
     return{"hello":"world"}
 
-@app.post("/person/new")
+@app.post("/person/new",response_model=PersonOut)
 def create_person(person:Person=Body(...)):
     return person
 
