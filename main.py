@@ -11,7 +11,7 @@ from pydantic import EmailStr
 
 # FastAPI
 from fastapi import FastAPI
-from fastapi import Body, Query,Path,Form
+from fastapi import Body, Query,Path,Form, Cookie, Header
 from fastapi import status
 
 # models
@@ -185,3 +185,31 @@ def login(
     password:str=Form(...)
 ):
     return LoginOut(username=username)
+
+# cookies and headers parameters.
+
+@app.post(
+    path="/contact",
+    status_code=status.HTTP_200_OK
+)
+def contact(
+    firt_name:str=Form(
+        ...,
+        max_length=20,
+        min_length=1
+        ),
+    lastname:str=Form(
+        ..., 
+        max_length=20,
+        min_length=1
+        ),
+    email:EmailStr=Form(...),
+    message:str=Form(
+        ...,
+        min_length=20,
+    ),
+    user_agent:Optional[str]=Header(default=None),
+    ads:Optional[str]=Cookie(default=None)
+):
+    return user_agent
+
