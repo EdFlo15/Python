@@ -13,7 +13,7 @@ from pydantic import EmailStr
 from fastapi import FastAPI
 from fastapi import Body, Query,Path,Form, Cookie, Header, UploadFile, File
 from fastapi import status
-
+from fastapi import HTTPException
 # models
 
 class HairColor(Enum):
@@ -141,6 +141,7 @@ def show_person(
  ):
     return {name:age}
     
+persons=[1,2,3,4,5]
 # validaciones path parameters
 @app.get("/person/details/{person_id}")
 def show_person(
@@ -152,6 +153,11 @@ def show_person(
         example=1
         ),
 ):
+    if person_id not in persons:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="This person does not exist"
+        )
     return {person_id:"It´s exist"}
     
 # validaciones body parameters
