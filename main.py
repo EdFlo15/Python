@@ -201,7 +201,8 @@ def show_person(
 
 @app.put(
     path="/person/{person_id}",
-    tags=["persons"]
+    tags=["persons"],
+    deprecated=True
     )
 def update_person(
     person_id:int =Path(
