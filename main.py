@@ -103,18 +103,39 @@ app=FastAPI()
 @app.get(
     path="/", 
     status_code=status.HTTP_200_OK,
-    tags=["Enlaces"]
+    tags=["Enlaces"],
+    summary="Home page"
     )
 def home():
+    """
+    Home
+    -This path operations only return and hello world for test proposals:
+
+        -parameters:None
+        -return: a message
+    """
+    
     return{"hello":"world"}
 
 @app.post(
     path="/person/new",
     response_model=PersonOut,
     status_code=status.HTTP_201_CREATED,
-    tags=["persons"]
+    tags=["persons"],
+    summary="Create person on the app"
     )
 def create_person(person:Person=Body(...)):
+    """
+    Create Person
+    
+    This path operations create a person in the app and save the information in a database
+    Parameters:
+    - Request body parameters:
+         - **person:Person** -> A person model with fisrt_name, last_name, age, hair color, marital status, ip address, email address, and password
+    - Returns:
+         - **Person** -> a person model with fisrt_name, last_name, age, hair color, marital status, ip address, email address, and password
+
+    """
     return person
 
 # validaciones con query parameters
@@ -140,8 +161,17 @@ def show_person(
         description="This is the person age",
         example=34
         )
-
  ):
+    """
+    Person Details.
+
+    This path operations show the details of and person
+
+    Parameters:
+    - Request path parameters:
+    - Return: two parameters: name and age
+
+    """
     return {name:age}
     
 persons=[1,2,3,4,5]
@@ -165,6 +195,7 @@ def show_person(
             detail="This person does not exist"
         )
     return {person_id:"It´s exist"}
+    
     
 # validaciones body parameters
 
