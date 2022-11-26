@@ -11,7 +11,7 @@ from pydantic import EmailStr
 
 # FastAPI
 from fastapi import FastAPI
-from fastapi import Body, Query,Path,Form, Cookie, Header
+from fastapi import Body, Query,Path,Form, Cookie, Header, UploadFile, File
 from fastapi import status
 
 # models
@@ -213,3 +213,16 @@ def contact(
 ):
     return user_agent
 
+# files
+
+@app.post(
+    path="/post-image"
+)
+def post_image(
+    image:UploadFile=File(...)
+):
+    return {
+        "Filename":image.filename,
+        "format":image.content_type,
+        "Size(kb)":round(len(image.file.read())/1024,ndigits=2)
+    }
